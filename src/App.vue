@@ -41,10 +41,12 @@
         <TableData :dataset="dataset" />
       </div>
     </div>
+    <ChartLinear :dataset="dataset" :regression="regression" />
   </div>
 </template>
 <script>
 import TableData from "./components/TableData";
+import ChartLinear from "./components/ChartLinear";
 export default {
   name: "App",
   data() {
@@ -64,6 +66,12 @@ export default {
       denom: null,
       m: null,
       b: null,
+      regression: [],
+      xmax: null,
+      i: null,
+      yval: null,
+
+      showchart: false,
     };
   },
   methods: {
@@ -76,8 +84,6 @@ export default {
       this.temperature = null;
     },
     Calculate() {
-      console.log(2222);
-
       // คำนวน sum
       this.dataset.forEach((data) => {
         this.sumx += data.x;
@@ -105,26 +111,40 @@ export default {
       this.m = this.num / this.denom;
       this.b = this.meany - this.m * this.meanx;
 
-      console.log(
-        "ค่า sumx = " +
-          this.sumx +
-          "\n" +
-          "ค่า sumy = " +
-          this.sumy +
-          "\n" +
-          "ค่า meanx = " +
-          this.meanx +
-          "\n" +
-          "ค่า meany = " +
-          this.meany +
-          "\n" +
-          "ค่า m = " +
-          this.m +
-          "\n" +
-          "ค่า b = " +
-          this.b +
-          "\n"
-      );
+      // หาค่า max x
+      this.xmax = Math.max(...this.dataset.map((obj) => obj.x));
+
+      // สร้างเส้น
+      for (this.i = 0; this.i <= this.xmax; this.i++) {
+        this.yval = this.m + this.b * this.i;
+        this.regression.push({ x: this.i, y: this.yval });
+      }
+
+      console.log(this.regression);
+
+      // console.log(
+      //   "ค่า sumx = " +
+      //     this.sumx +
+      //     "\n" +
+      //     "ค่า sumy = " +
+      //     this.sumy +
+      //     "\n" +
+      //     "ค่า meanx = " +
+      //     this.meanx +
+      //     "\n" +
+      //     "ค่า meany = " +
+      //     this.meany +
+      //     "\n" +
+      //     "ค่า m = " +
+      //     this.m +
+      //     "\n" +
+      //     "ค่า b = " +
+      //     this.b +
+      //     "\n"
+      // );
+    },
+    ShowChart() {
+      this.showchart = true;
     },
   },
   computed: {
@@ -137,6 +157,7 @@ export default {
   },
   components: {
     TableData,
+    ChartLinear,
   },
 };
 </script>
