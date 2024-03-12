@@ -1,7 +1,6 @@
 <template>
   <div class="mt-3">
-    <button @click="appendCode">แสดงกราฟ</button>
-    <div v-html="dynamicHTML"></div>
+    <canvas id="acquisitions"></canvas>
   </div>
 </template>
 
@@ -33,7 +32,12 @@ export default {
         datasets: [
           {
             label: "Scatter Dataset",
-            data: this.dataset,
+            data: [
+              { x: 1, y: 3 },
+              { x: 2, y: 5 },
+              { x: 3, y: 8 },
+              { x: 4, y: 10 },
+            ],
             backgroundColor: "red",
           },
           {
@@ -67,7 +71,7 @@ export default {
   methods: {
     appendCode() {
       // โค้ดที่คุณต้องการเพิ่ม
-      const newHTML = '<p style="color: blue;">Appended HTML</p>';
+      const newHTML = '<canvas id="acquisitions"></canvas></div>';
       // เพิ่มโค้ดใน dynamicHTML
       this.dynamicHTML += newHTML;
     },
